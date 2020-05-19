@@ -117,12 +117,12 @@ print('b  =', model.b.numpy())
 y_pred = model.predict(X)
 print(y_pred)
 
-writer = tf.summary.create_file_writer("./logs/")
-with writer.as_default():
-  for step in range(100):
-    # other model code would go here
-    tf.summary.scalar("my_metric", 0.5, step=step)
-    writer.flush()
+# writer = tf.summary.create_file_writer("./logs/")
+# with writer.as_default():
+#   for step in range(100):
+#     # other model code would go here
+#     tf.summary.scalar("my_metric", 0.5, step=step)
+#     writer.flush()
 
 model.plot_loss()
 # model.plot_2d_data(X_numpy, y_numpy)
