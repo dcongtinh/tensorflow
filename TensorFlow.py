@@ -33,7 +33,8 @@ class Model(object):
 
     def loss(self, target_y, predicted_y):
         # return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=target_y, logits=predicted_y))
-        return tf.reduce_mean(tf.square(target_y - predicted_y))
+        finalModel = tf.reduce_mean(tf.square(target_y - predicted_y))
+        return finalModel
 
     def plot_loss(self):
         plt.plot(self.losses, label='train_loss')
@@ -100,7 +101,7 @@ neg_idx = np.array([i for i in range(len(y)) if y[i][0] == 0])
 model = Model()
 print("\nTraining ...")
 Ws, bs = [], []
-epochs = 1000
+epochs = 100
 lr = 0.2
 for epoch in range(epochs):
     Ws.append(model.W.numpy())
@@ -115,6 +116,13 @@ print('W1 =', model.W.numpy()[0][0], 'W2 =', model.W.numpy()[1][0])
 print('b  =', model.b.numpy())
 y_pred = model.predict(X)
 print(y_pred)
+
+writer = tf.summary.create_file_writer("./logs/")
+with writer.as_default():
+  for step in range(100):
+    # other model code would go here
+    tf.summary.scalar("my_metric", 0.5, step=step)
+    writer.flush()
 
 model.plot_loss()
 # model.plot_2d_data(X_numpy, y_numpy)

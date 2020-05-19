@@ -44,7 +44,6 @@ class Model(object):
         plt.legend(loc='upper right')
         plt.show()
 
-
 X = np.array([[0., 0],
               [0, 1],
               [1, 0],
@@ -67,5 +66,6 @@ for epoch in range(epochs):
     Ws.append(model.W.numpy())
     bs.append(model.b.numpy())
     loss = model.train(X, y_trans, learning_rate=lr)
+
 # model.plot_loss()
 print(model.predict([[-1., -1]]))

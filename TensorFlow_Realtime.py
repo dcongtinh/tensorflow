@@ -9,7 +9,6 @@ b = tf.Variable(3.0)  # bias
 
 # Aggeration function
 
-
 def g(x):
     return tf.matmul(x, W)+b
 # Predict using 'sigmoid' activation
