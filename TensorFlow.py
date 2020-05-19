@@ -31,9 +31,9 @@ class Model(object):
     def predict(self, x):
         return tf.sigmoid(self.g(x))
 
-    def loss(self, target_y, predicted_y):
-        # return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=target_y, logits=predicted_y))
-        return tf.reduce_mean(tf.square(target_y - predicted_y))
+    def loss(self, y_true, y_pred):
+        # return tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y_true, logits=y_pred))
+        return tf.reduce_mean(tf.square(y_true - y_pred))
 
     def plot_loss(self):
         plt.plot(self.losses, label='train_loss')
@@ -100,8 +100,7 @@ neg_idx = np.array([i for i in range(len(y)) if y[i][0] == 0])
 model = Model()
 print("\nTraining ...")
 Ws, bs = [], []
-epochs = 1000
-lr = 0.2
+epochs, lr = 10000, 0.2
 for epoch in range(epochs):
     Ws.append(model.W.numpy())
     bs.append(model.b.numpy())
@@ -117,5 +116,5 @@ y_pred = model.predict(X)
 print(y_pred)
 
 model.plot_loss()
-# model.plot_2d_data(X_numpy, y_numpy)
-model.plot_data(X, y, y_pred.numpy())
+# model.plot_2d_data(X, y)
+# model.plot_data(X, y, y_pred.numpy())

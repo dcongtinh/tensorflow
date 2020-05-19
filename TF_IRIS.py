@@ -21,8 +21,8 @@ class Model(object):
     def predict(self, x):
         return tf.nn.softmax(self.g(x))
 
-    def loss(self, y, y_pred):
-        cross_entropy = tf.reduce_mean(-tf.reduce_sum(y *
+    def loss(self, y_true, y_pred):
+        cross_entropy = tf.reduce_mean(-tf.reduce_sum(y_true *
                                                       tf.math.log(y_pred), 1))
         return cross_entropy
 
@@ -54,12 +54,12 @@ y_trans = enc.fit_transform(y).toarray()
 model = Model()
 print("\nTraining ...")
 Ws, bs = [], []
-epochs = 10000
+epochs = 1000
 lr = 0.2
 
 for epoch in range(epochs):
     Ws.append(model.W.numpy())
     bs.append(model.b.numpy())
     loss = model.train(X, y_trans, learning_rate=lr)
-model.plot_loss()
+# model.plot_loss()
 print(model.predict([[5.9, 3., 5.1, 1.8]]))
