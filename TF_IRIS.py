@@ -70,17 +70,18 @@ y_trans = enc.fit_transform(y).toarray()
 
 model = Model()
 print("\nTraining ...")
-Ws, bs = [], []
-epochs = 10000
-lr = 0.2
+epochs, lr = 1000, 0.2
 
 start_time = time.time()
 for epoch in range(epochs):
-    Ws.append(model.W.numpy())
-    bs.append(model.b.numpy())
     loss = model.train(X, y_trans, learning_rate=lr)
+    print("Epoch %d: Loss=%.6f" % (epoch+1, loss))
 end_time = time.time()
+
 print("Training time: %fs\n" % (end_time-start_time))
+print('W =', model.W)
+print('b =', model.b)
+
 model.plot_loss()
 model.metrics(y_trans, model.predict(X).numpy())
 print(model.predict([[5.9, 3., 5.1, 1.8]]))  # Lớp 2

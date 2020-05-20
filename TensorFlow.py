@@ -100,13 +100,13 @@ neg_idx = np.array([i for i in range(len(y)) if y[i][0] == 0])
 model = Model()
 print("\nTraining ...")
 Ws, bs = [], []
-epochs, lr = 10000, 0.2
+epochs, lr = 1000, 0.2
 for epoch in range(epochs):
     Ws.append(model.W.numpy())
     bs.append(model.b.numpy())
     loss = model.train(X, y, learning_rate=lr)
-    # print("Epoch %d: W1=%.6f, W2=%.6f, b=%.6f, Loss=%.6f" %
-    #       (epoch+1, Ws[-1][0], Ws[-1][1], bs[-1], loss))
+    print("Epoch %d: W1=%.6f, W2=%.6f, b=%.6f, Loss=%.6f" %
+          (epoch+1, Ws[-1][0], Ws[-1][1], bs[-1], loss))
 
 print(model.W)
 print(model.b)
@@ -115,13 +115,6 @@ print('b  =', model.b.numpy())
 y_pred = model.predict(X)
 print(y_pred)
 
-# writer = tf.summary.create_file_writer("./logs/")
-# with writer.as_default():
-#   for step in range(100):
-#     # other model code would go here
-#     tf.summary.scalar("my_metric", 0.5, step=step)
-#     writer.flush()
-
 model.plot_loss()
 # model.plot_2d_data(X, y)
-# model.plot_data(X, y, y_pred.numpy())
+model.plot_data(X, y, y_pred.numpy())

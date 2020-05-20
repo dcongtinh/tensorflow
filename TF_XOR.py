@@ -1,7 +1,6 @@
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
-# from sklearn.preprocessing import OneHotEncoder
 
 print('Tensorflow Version:', tf.__version__)
 
@@ -9,7 +8,6 @@ print('Tensorflow Version:', tf.__version__)
 class Model(object):
     def __init__(self):
         dimension = 2
-
         self.W1 = tf.Variable(tf.random.uniform((dimension, 2), -1, 1))
         self.b1 = tf.Variable(tf.random.uniform((2,), -1, 1))
         self.W2 = tf.Variable(tf.random.uniform((2, 1), -1, 1))
@@ -20,10 +18,11 @@ class Model(object):
         hidden = tf.nn.sigmoid(tf.matmul(x, self.W1) + self.b1)
         return tf.nn.sigmoid(tf.matmul(hidden, self.W2) + self.b2)
 
-    def loss(self, y, y_pred):
-        # loss_value = tf.reduce_mean(-tf.reduce_sum(y*tf.math.log(y_pred)+(tf.constant(1.0)-y)*tf.math.log(tf.constant(1.0) - y_pred), 1))
+    def loss(self, y_true, y_pred):
+        # loss_value = tf.reduce_mean(-tf.reduce_sum(y_true*tf.math.log(y_pred)+(
+        #     tf.constant(1.0)-y_true)*tf.math.log(tf.constant(1.0) - y_pred), 1))
         # print('square:',tf.square(y-y_pred))
-        loss_value = tf.reduce_mean(tf.square(y-y_pred))
+        loss_value = tf.reduce_mean(tf.square(y_true-y_pred))
         return loss_value
 
     def train(self, X, y, learning_rate=0.05):
@@ -54,18 +53,17 @@ Y = [[0.],
      [1],
      [1],
      [0]]
-# enc = OneHotEncoder(handle_unknown='ignore')
-# y_trans = enc.fit_transform(y).toarray()
+
 model = Model()
 print("\nTraining ...")
 
-epochs = 5000
-lr = 1
+epochs = 10000
+lr = 0.2
 
 print(model.predict(X))
 for epoch in range(epochs):
     loss = model.train(X, Y, learning_rate=lr)
-    print(loss)
+    print("Epoch %d: Loss=%.6f" % (epoch+1, loss))
 
-# model.plot_loss()
+model.plot_loss()
 print(model.predict(X))
