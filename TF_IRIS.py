@@ -1,8 +1,10 @@
+import time
 import numpy as np
 import tensorflow as tf
 from sklearn import datasets
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.metrics import accuracy_score, precision_score, f1_score, recall_score
 
 
 class Model(object):
@@ -35,6 +37,21 @@ class Model(object):
         self.losses.append(current_loss)
         return current_loss
 
+    def metrics(self, y_true, y_pred, average='weighted'):
+        for y in y_pred:
+            idx_max = np.argmax(y)
+            y[:] = 0.
+            y[idx_max] = 1.
+        self.accuracy = accuracy_score(y_true, y_pred)*100
+        self.precision = precision_score(
+            y_true, y_pred, average=average, zero_division=1)*100
+        self.f1 = f1_score(y_true, y_pred, average=average)*100
+        self.recall = recall_score(y_true, y_pred, average=average)*100
+        print('Accuracy  = {}%'.format(model.accuracy))
+        print('Precision = {}%'.format(model.precision))
+        print('F1_Score  = {}%'.format(model.f1))
+        print('Recall    = {}%'.format(model.recall))
+
     def plot_loss(self):
         plt.plot(self.losses, label='train_loss')
         plt.xlabel('Iter #')
@@ -47,19 +64,23 @@ data = datasets.load_iris()
 X = data.data
 y = data.target
 y = y.reshape((y.shape[0], 1))
-print(X)
+# print(X)
 enc = OneHotEncoder(handle_unknown='ignore')
 y_trans = enc.fit_transform(y).toarray()
 
 model = Model()
 print("\nTraining ...")
 Ws, bs = [], []
-epochs = 1000
+epochs = 10000
 lr = 0.2
 
+start_time = time.time()
 for epoch in range(epochs):
     Ws.append(model.W.numpy())
     bs.append(model.b.numpy())
     loss = model.train(X, y_trans, learning_rate=lr)
-# model.plot_loss()
-print(model.predict([[5.9, 3., 5.1, 1.8]]))
+end_time = time.time()
+print("Training time: %fs\n" % (end_time-start_time))
+model.plot_loss()
+model.metrics(y_trans, model.predict(X).numpy())
+print(model.predict([[5.9, 3., 5.1, 1.8]]))  # Lớp 2
