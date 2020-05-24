@@ -61,10 +61,9 @@ model = Model()
 print("\nTraining ...")
 epochs, lr = 1000, 0.2
 
-
 for epoch in range(epochs):
     loss = model.train(X, y_trans, learning_rate=lr)
     print("Epoch %d: Loss=%.6f" % (epoch+1, loss))
 
 model.plot_loss()
-print(model.predict([[-1., -1]]))
+# print(model.predict([[-1., -1]]))

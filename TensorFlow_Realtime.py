@@ -43,7 +43,7 @@ def train(X, Y, rate):
 '''
 Render function, where:
 	axLoss: axes of showing loss
-	lossValues: 1-D list: values of loss through epoches
+	lossValues: 1-D list: values of loss through epochs
 	axData: axes of showing data and prediction values
 	X: Shape(n,2): Training attribute
 	Y: Labels(n,1): Training label
@@ -124,3 +124,4 @@ plt.show()
 Print trainnig result
 '''
 print('Predict values:\n', predict(X).numpy(), sep='')
+    
