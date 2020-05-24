@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 
 print('Tensorflow Version:', tf.__version__)
 
-
 class Model(object):
     def __init__(self):
         dimension = 2

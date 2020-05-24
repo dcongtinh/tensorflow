@@ -110,8 +110,12 @@ Now, go train and paint training result periodically
 for ep in range(epoch):
     lossValues.append(train(X, Y, learning_rate))
     if ep % renderEvery == 0:
-        pred = predict(X).numpy()
-        doRender(axLoss, lossValues, axData, X, Y, pred)
+        pred = predict(X).
+
+'''
+Print training result
+'''
+print('Predict values:\n', predict(X).numpy(), sep='')
 '''
 Call rendering for the last frame :)
 '''
@@ -119,9 +123,3 @@ doRender(axLoss, lossValues, axData, X, Y, pred)
 
 plt.ioff()  # interaction mode
 plt.show()
-
-'''
-Print trainnig result
-'''
-print('Predict values:\n', predict(X).numpy(), sep='')
-    
