@@ -48,7 +48,7 @@ def doRender(axLoss, lossValues, axData, X, Y, pred):
     axData.cla()  # clear axes
     axLoss.cla()
     axData.set_title('Data presentation')
-    axLoss.set_title('Loss through epoches')
+    axLoss.set_title('Loss through epochs')
     axLoss.set_xlabel('Epoch')
     axLoss.set_ylabel('Loss')
     for _ in range(len(Y)):
