@@ -61,7 +61,7 @@ class Model(object):
         plt.xlabel('Iter #')
         plt.ylabel('Loss')
         plt.legend(loc='upper right')
-        plt.show()
+
 
 data = datasets.load_iris()
 X = data.data
@@ -71,7 +71,7 @@ y = y.reshape((y.shape[0], 1))
 enc = OneHotEncoder(handle_unknown='ignore')
 y_trans = enc.fit_transform(y).toarray()
 
-X_train, X_test, Y_train, Y_test = splitter(X, y_trans, test_size=1.0/3, shuffle=True)
+X_train, X_test, Y_train, Y_test = splitter(X, y_trans, test_size=1.0/3, shuffle=True, stratify=y_trans)
 model = Model()
 print("\nTraining ...")
 epochs, lr = 1000, 0.2
@@ -93,10 +93,10 @@ print('====== Test metrics ======')
 matrix = model.metrics(Y_test, model.predict(X_test).numpy())
 print(matrix)
 
-#model.plot_loss()
+model.plot_loss()
+plt.show()
 
 import seaborn as sns
-
 ax = plt.subplot()
 sns.heatmap(matrix, annot=True, ax = ax, cmap="Blues"); #annot=True to annotate cells
 
