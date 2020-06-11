@@ -9,9 +9,9 @@ class Model(object):
     def __init__(self):
         dimension = 2
         self.W1 = tf.Variable(tf.random.uniform((dimension, 2), -1, 1))
-        self.b1 = tf.Variable(tf.random.uniform((2,), -1, 1))
+        self.b1 = tf.Variable(tf.zeros((2,)))
         self.W2 = tf.Variable(tf.random.uniform((2, 1), -1, 1))
-        self.b2 = tf.Variable(tf.random.uniform((1,), -1, 1))
+        self.b2 = tf.Variable(tf.zeros((1,)))
         self.losses = []
 
     def predict(self, x):
@@ -19,10 +19,10 @@ class Model(object):
         return tf.nn.sigmoid(tf.matmul(hidden, self.W2) + self.b2)
 
     def loss(self, y_true, y_pred):
-        # loss_value = tf.reduce_mean(-tf.reduce_sum(y_true*tf.math.log(y_pred)+(
-        #     tf.constant(1.0)-y_true)*tf.math.log(tf.constant(1.0) - y_pred), 1))
+        loss_value = tf.reduce_mean(-tf.reduce_sum(y_true*tf.math.log(y_pred)+(
+            tf.constant(1.0)-y_true)*tf.math.log(tf.constant(1.0) - y_pred), 1))
         # print('square:',tf.square(y-y_pred))
-        loss_value = tf.reduce_mean(tf.square(y_true-y_pred))
+        # loss_value = tf.reduce_mean(tf.square(y_true-y_pred))
         return loss_value
 
     def train(self, X, y, learning_rate=0.05):
@@ -45,11 +45,11 @@ class Model(object):
         plt.show()
 
 
-X = [[0., 0],
-     [0, 1],
-     [1, 0],
-     [1, 1]]
-Y = [[0.],
+X = [[0.0, 0.0],
+     [0.0, 1.0],
+     [1.0, 0.0],
+     [1.0, 1.0]]
+y = [[0],
      [1],
      [1],
      [0]]
@@ -57,13 +57,16 @@ Y = [[0.],
 model = Model()
 print("\nTraining ...")
 
-epochs = 10000
-lr = 0.2
+epochs = 3000
+lr = 0.3
 
-print(model.predict(X))
 for epoch in range(epochs):
-    loss = model.train(X, Y, learning_rate=lr)
-    print("Epoch %d: Loss=%.6f" % (epoch+1, loss))
+    loss = model.train(X, y, learning_rate=lr)
+    # print("Epoch %d: Loss=%.6f" % (epoch+1, loss))
 
-model.plot_loss()
+print('W1 =', model.W1)
+print('b1 =', model.b1)
+print('W2 =', model.W2)
+print('b2 =', model.b2)
 print(model.predict(X))
+model.plot_loss()
