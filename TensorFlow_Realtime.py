@@ -43,7 +43,7 @@ def train(X, Y, rate):
 '''
 Render function, where:
 	axLoss: axes of showing loss
-	lossValues: 1-D list: values of loss through epoches
+	lossValues: 1-D list: values of loss through epochs
 	axData: axes of showing data and prediction values
 	X: Shape(n,2): Training attribute
 	Y: Labels(n,1): Training label
@@ -110,8 +110,12 @@ Now, go train and paint training result periodically
 for ep in range(epoch):
     lossValues.append(train(X, Y, learning_rate))
     if ep % renderEvery == 0:
-        pred = predict(X).numpy()
-        doRender(axLoss, lossValues, axData, X, Y, pred)
+        pred = predict(X).
+
+'''
+Print training result
+'''
+print('Predict values:\n', predict(X).numpy(), sep='')
 '''
 Call rendering for the last frame :)
 '''
@@ -119,8 +123,3 @@ doRender(axLoss, lossValues, axData, X, Y, pred)
 
 plt.ioff()  # interaction mode
 plt.show()
-
-'''
-Print trainnig result
-'''
-print('Predict values:\n', predict(X).numpy(), sep='')
