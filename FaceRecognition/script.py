@@ -7,14 +7,7 @@ testing_dir = os.path.join(data_path, 'att_faces', 'Testing')
 
 for j in os.walk(testing_dir):
     if len(j[2]):
-        for sample_pose in j[2]:
-            # if '.pgm' not in sample_pose:
-            #     os.remove(j[0] + '/' + sample_pose)
-            print(j[0], sample_pose)
-            # print(source, destination)
-            # shutil.copyfile(source, destination)
-            # if 'pose00' in j[0] + '/' + sample_pose:
-            #     #     print(dst + '/' + sample)
-            #     os.remove(j[0] + '/' + sample_pose)
-            # print('############# DONE ' +
-            #       sample_pose+'#############')
+        for filename in j[2]:
+            if '.DS_Store' in filename:
+                os.remove(j[0] + '/' + filename)
+                print(j[0], filename)
