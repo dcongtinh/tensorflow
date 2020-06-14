@@ -28,43 +28,70 @@ if dataset_name == 'yalefaces':
     classes = 15
     epochs = 100
 
-# Import dataset
-train_faces, train_labels = data.LoadTrainingData(
-    training_dir, (image_width, image_height))
 
-test_faces, test_labels = data.LoadTestingData(
-    testing_dir, (image_width, image_height))
-print(train_faces[0], train_faces[0].shape)
-# NN model
-model = Sequential()
-model.add(Flatten(input_shape=(image_width, image_height)))
-model.add(Dense(128, activation='relu'))
-model.add(Dense(classes))
-model.compile(optimizer='adam',
-              loss=SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
+def load_data():
+    # Import dataset
+    train_faces, train_labels = data.LoadTrainingData(
+        training_dir, (image_width, image_height))
 
-model.fit(train_faces, train_labels, epochs=epochs)
-model.add(Softmax())
+    test_faces, test_labels = data.LoadTestingData(
+        testing_dir, (image_width, image_height))
+    return train_faces, train_labels, test_faces, test_labels
 
-predictions = model.predict(test_faces)
-print(predictions[0])
-pred_labels = np.array([np.argmax(pred) for pred in predictions])
 
-# Calculate metrics
-average = 'weighted'
-accuracy = accuracy_score(test_labels, pred_labels)*100
-precision = precision_score(
-    test_labels, pred_labels, average=average)*100
-f1 = f1_score(test_labels, pred_labels, average=average)*100
-recall = recall_score(test_labels, pred_labels, average=average)*100
+def build_model(X_train, y_train):
+    # NN model
+    model = Sequential()
+    model.add(Flatten(input_shape=(image_width, image_height)))
+    model.add(Dense(128, activation='relu'))
+    model.add(Dense(classes))
+    model.compile(optimizer='adam',
+                  loss=SparseCategoricalCrossentropy(from_logits=True),
+                  metrics=['accuracy'])
 
-print('\n')
-print('Accuracy  = {}%'.format(accuracy))
-print('Precision = {}%'.format(precision))
-print('Recall    = {}%'.format(recall))
-print('F1_Score  = {}%'.format(f1))
-print('\n')
+    model.fit(X_train, y_train, epochs=epochs)
+    model.add(Softmax())
+    return model
 
-for i in range(classes):
-    res = 'Correct' if test_labels[i] == pred_labels[i] else 'Incorrect'
-    print('True: %2d   Pred: %2d   %s' % (test_labels[i], pred_labels[i], res))
+
+def predict(model, X_Pred):
+    preds = model.predict(X_Pred)
+    # print(preds[0])
+    y_pred = np.array([np.argmax(pred) for pred in preds])
+    return y_pred
+
+
+def cal_metrics(y_true, y_pred, average='weighted'):
+    # Calculate metrics
+    accuracy = accuracy_score(y_true, y_pred)*100
+    precision = precision_score(
+        y_true, y_pred, average=average, zero_division=1)*100
+    f1 = f1_score(y_true, y_pred, average=average)*100
+    recall = recall_score(y_true, y_pred, average=average)*100
+
+    print('\n')
+    print('Accuracy  = {:.3f}%'.format(accuracy))
+    print('Precision = {:.3f}%'.format(precision))
+    print('Recall    = {:.3f}%'.format(recall))
+    print('F1_Score  = {:.3f}%'.format(f1))
+    print('\n')
+
+
+def plot_image(idx, images):
+    img = images[idx].reshape(image_height, image_width)
+    plt.imshow(img, cmap='gray')
+    plt.show()
+
+
+def main():
+    X_train, y_train, X_test, y_test = load_data()
+    model = build_model(X_train, y_train)
+    y_pred = predict(model, X_test)
+    cal_metrics(y_test, y_pred)
+    for i in range(classes):
+        res = 'Correct' if y_test[i] == y_pred[i] else 'Incorrect'
+        print('True: %-2d   Pred: %-2d   %s' % (y_test[i], y_pred[i], res))
+
+
+if __name__ == '__main__':
+    main()

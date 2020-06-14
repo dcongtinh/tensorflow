@@ -27,6 +27,7 @@ def LoadTrainingData(Dir, Img_Shape):
                 Images.append(Img)
                 Labels.append(int(SubDir[1:])-1)
 
+    # shuffle train faces and train labels
     Images, Labels = shuffle(Images, Labels, random_state=2020)
 
     Images = np.asarray(Images, dtype='float32').reshape(
@@ -36,7 +37,7 @@ def LoadTrainingData(Dir, Img_Shape):
 
 
 def LoadTestingData(Dir, Img_Shape):
-    print("Testing Data is Loaing ...")
+    print("Testing Data is Loading ...")
     (Images, Labels, ID) = ([], [], 0)
 
     for (_, Dirs, _) in os.walk(Dir):
