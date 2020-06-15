@@ -7,6 +7,7 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import accuracy_score, precision_score, f1_score, recall_score
 from sklearn.model_selection import train_test_split as splitter
 from sklearn.metrics import confusion_matrix
+import seaborn as sns
 
 class Model(object):
     def __init__(self):
@@ -38,7 +39,7 @@ class Model(object):
         self.losses.append(current_loss)
         return current_loss
 
-    def metrics(self, y_true, y_pred, average='weighted'): 
+    def metrics(self, y_true, y_pred, average='weighted'):
         for y in y_pred:
             idx_max = np.argmax(y)
             y[:] = 0.
@@ -96,14 +97,14 @@ print(matrix)
 model.plot_loss()
 plt.show()
 
-import seaborn as sns
+
 ax = plt.subplot()
 sns.heatmap(matrix, annot=True, ax = ax, cmap="Blues"); #annot=True to annotate cells
 
 # labels, title and ticks
 ax.set_xlabel('True labels');
-ax.set_ylabel('Predicted labels'); 
-ax.set_title('Confusion Matrix'); 
-ax.xaxis.set_ticklabels(['0', '1', '2']); 
+ax.set_ylabel('Predicted labels');
+ax.set_title('Confusion Matrix');
+ax.xaxis.set_ticklabels(['0', '1', '2']);
 ax.yaxis.set_ticklabels(['0', '1', '2']);
 plt.show()

@@ -3,17 +3,24 @@
 # logger.setLevel(logger.DEBUG)
 
 from data import *
+import matplotlib.pyplot as plt
+
 import tensorflow as tf
 import tensorflow_hub as hub
 import numpy as np
 import tensorflow.keras as keras
-EPOCHS = 10
+from sklearn.metrics import confusion_matrix
+
+import seaborn as sns
+
+# constants for training
+EPOCHS = 100
 
 def trainModel(data, label, classCount):
     embedding = 'https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim/1'
 
     hub_layer = hub.KerasLayer(
-        "https://tfhub.dev/google/tf2-preview/gnews-swivel-20dim/1",
+        embedding,
         output_shape=[20],
         input_shape=[],
         dtype=tf.string
@@ -23,8 +30,9 @@ def trainModel(data, label, classCount):
     model.add(keras.layers.Dense(16, activation='relu'))
     model.add(keras.layers.Dense(classCount))
 
+    optimizer = keras.optimizers.Adam(learning_rate=0.02)
     model.compile(
-        optimizer='adam',
+        optimizer = optimizer,
         loss = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
         metrics=['accuracy']
     )
@@ -63,9 +71,17 @@ def main():
     print('=== Validation ===')
     result = validateModel(model, test_data, test_label)
 
-    # print('=== Prediction ===')
-    # pred = model.predict([['']])
-    # print(np.argmax(pred))
+
+    print('=== Prediction ===')
+    pred   = [np.argmax(x) for x in model.predict(test_data)]
+    actual = test_label.reshape(-1)
+
+    cm = confusion_matrix(actual, pred)
+    print(cm)
+
+    ax = plt.subplot()
+    sns.heatmap(cm, annot=True, ax = ax, cmap="Blues", xticklabels=data['labels'][::-1], yticklabels=data['labels'][::-1]); #annot=True to annotate cells
+    plt.show()
 
 if __name__=='__main__':
     main()
