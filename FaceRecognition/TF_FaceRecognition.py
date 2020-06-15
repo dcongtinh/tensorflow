@@ -39,7 +39,7 @@ def load_data():
     return train_faces, train_labels, test_faces, test_labels
 
 
-def build_model(X_train, y_train):
+def build_model(X_train, y_train, X_test, y_test):
     # NN model
     model = Sequential()
     model.add(Flatten(input_shape=(image_width, image_height)))
@@ -85,7 +85,7 @@ def plot_image(idx, images):
 
 def main():
     X_train, y_train, X_test, y_test = load_data()
-    model = build_model(X_train, y_train)
+    model = build_model(X_train, y_train, X_test, y_test)
     y_pred = predict(model, X_test)
     cal_metrics(y_test, y_pred)
     for i in range(classes):

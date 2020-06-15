@@ -66,7 +66,7 @@ def doRender(axLoss, lossValues, axData, X, Y, pred):
 '''
 (axData, axLoss) = plt.subplot(121, projection='3d'), plt.subplot(122)
 '''
-    data 
+    data
 '''
 X = [[0., 0],
      [0, 1],

@@ -13,9 +13,11 @@ def loadFolder(mainDir):
         _, subdirs, subfiles = next(os.walk(mainDir+dir))
         for file in subfiles:
             path = mainDir + dir + '/' + file
+
             logger.debug(path)
             with open(path, 'r', encoding='utf8') as f:
-                result.append([f.read(), labelIndex])
+                dat = f.read().replace('\n', '').replace('\ufeff', '')
+                result.append([dat, labelIndex])
         labelIndex += 1
     return np.array(result)
 
@@ -32,4 +34,4 @@ def loadData():
 
 if __name__ == '__main__':
     data = loadData()
-    print(data['train'][:, 1])
+    print(data['train'][:3])
